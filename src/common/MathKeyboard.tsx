@@ -30,16 +30,16 @@ interface MathKeyboardProps {
 
 const NR_SYMBOLS_PER_ROW = 5;
 
-console.ignoredYellowBox = ['Warning: Each', 'Warning: Failed'];
-console.disableYellowBox = true;
+// console.ignoredYellowBox = ['Warning: Each', 'Warning: Failed'];
+// console.disableYellowBox = true;
 
 class MathKeyboard extends Component<MathKeyboardProps> {
   onButtonPress = (symbol: string) => {
     KeyboardRegistry.onItemSelected(this.props.keyboardId, { symbol });
   };
 
-  renderButton = (symbol: string) => (
-    <View style={styles.button}>
+  renderButton = (symbol: string, key: string) => (
+    <View key={key} style={styles.button}>
       <TouchableOpacity onPress={() => this.onButtonPress(symbol)}>
         <MathWithText
           config={{ ex: 8, inline: false }}
@@ -52,7 +52,7 @@ class MathKeyboard extends Component<MathKeyboardProps> {
 
   renderRow = (row: string[], rowIndex: number) => (
     <View key={rowIndex} style={styles.row}>
-      {row.map(symbol => this.renderButton(symbol))}
+      {row.map((symbol, index) => this.renderButton(symbol, `${rowIndex}${index}`))}
     </View>
   );
 
