@@ -70,7 +70,7 @@ class MathKeyboard extends Component<MathKeyboardProps> {
       i++;
     }
     return (
-      <ScrollView contentContainerStyle={styles.keyboardContainer}>
+      <ScrollView contentContainerStyle={styles.keyboardContainer} keyboardShouldPersistTaps='always'>
         {rows.map((row, rowIndex) => this.renderRow(row, rowIndex))}
       </ScrollView>
     );

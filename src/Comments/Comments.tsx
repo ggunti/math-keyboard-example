@@ -25,10 +25,10 @@ interface CommentsProps {
   inputRef: any;
   setInputRef: (ref: any) => void;
   toolbarButtons: { text: string; testID: string; onPress: () => any }[];
+  isKeyboardShown: boolean;
   customKeyboard: { component?: string; initialProps?: { title: string } };
   onKeyboardItemSelected: (keyboardId: string, params: object) => void;
   onKeyboardResigned: () => void;
-  resetKeyboardView: () => void;
   setKeyboardAccessoryViewHeight: (height: number) => void;
   keyboardAccessoryViewHeight: number;
   modeButtons: string[];
@@ -51,7 +51,7 @@ class Comments extends Component<CommentsProps> {
             ref={this.props.setInputRef}
             placeholder='Message'
             underlineColorAndroid='transparent'
-            onFocus={this.props.resetKeyboardView}
+            onBlur={this.props.onKeyboardResigned}
             value={this.props.message}
             onChangeText={this.props.setMessage}
           />
@@ -59,19 +59,20 @@ class Comments extends Component<CommentsProps> {
             <Text>Send</Text>
           </TouchableOpacity>
         </View>
-
-        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} keyboardShouldPersistTaps='handled'>
-          {this.props.toolbarButtons.map((button, index) => (
-            <TouchableOpacity
-              onPress={button.onPress}
-              style={{ paddingHorizontal: 8, paddingBottom: 10 }}
-              key={index}
-              testID={button.testID}
-            >
-              <Text>{button.text}</Text>
-            </TouchableOpacity>
-          ))}
-        </ScrollView>
+        {(this.props.isKeyboardShown || this.props.customKeyboard.component) && (
+          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} keyboardShouldPersistTaps='handled'>
+            {this.props.toolbarButtons.map((button, index) => (
+              <TouchableOpacity
+                onPress={button.onPress}
+                style={{ paddingHorizontal: 8, paddingBottom: 10 }}
+                key={index}
+                testID={button.testID}
+              >
+                <Text>{button.text}</Text>
+              </TouchableOpacity>
+            ))}
+          </ScrollView>
+        )}
       </View>
     );
   };

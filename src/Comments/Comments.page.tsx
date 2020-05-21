@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Keyboard } from 'react-native';
 // @ts-ignore
 import { KeyboardUtils } from 'react-native-keyboard-input';
 import Comments from './Comments';
@@ -12,6 +13,7 @@ interface CommentsPageState {
     initialProps?: {};
   };
   keyboardAccessoryViewHeight: number;
+  isKeyboardShown: boolean;
   selectedModeIndex: number;
 }
 
@@ -24,6 +26,7 @@ class CommentsPage extends Component<{}, CommentsPageState> {
       initialProps: undefined,
     },
     keyboardAccessoryViewHeight: 0,
+    isKeyboardShown: false,
     selectedModeIndex: 0,
   };
 
@@ -116,6 +119,27 @@ class CommentsPage extends Component<{}, CommentsPageState> {
     },
   ];
 
+  componentDidMount() {
+    Keyboard.addListener('keyboardDidShow', this.keyboardDidShow);
+    Keyboard.addListener('keyboardDidHide', this.keyboardDidHide);
+  }
+
+  componentWillUnmount() {
+    Keyboard.removeListener('keyboardDidShow', this.keyboardDidShow);
+    Keyboard.removeListener('keyboardDidHide', this.keyboardDidHide);
+  }
+
+  keyboardDidShow = () => {
+    const { isKeyboardShown } = this.state;
+    if (!isKeyboardShown) {
+      this.setState({ isKeyboardShown: true });
+    }
+  };
+
+  keyboardDidHide = () => {
+    this.setState({ isKeyboardShown: false });
+  };
+
   onKeyboardItemSelected = (_keyboardId: string, params: object) => {
     // @ts-ignore
     const { symbol }: { symbol: string } = params;
@@ -123,11 +147,11 @@ class CommentsPage extends Component<{}, CommentsPageState> {
   };
 
   onKeyboardResigned = () => {
-    this.resetKeyboardView();
+    this.setState({ customKeyboard: {} });
   };
 
   resetKeyboardView = () => {
-    this.setState({ customKeyboard: {} });
+    this.setState({ customKeyboard: {}, isKeyboardShown: true });
   };
 
   showKeyboardView = (component: string) => {
@@ -154,10 +178,10 @@ class CommentsPage extends Component<{}, CommentsPageState> {
         inputRef={this.inputRef}
         setInputRef={(ref: any) => (this.inputRef = ref)}
         toolbarButtons={this.toolbarButtons}
+        isKeyboardShown={this.state.isKeyboardShown}
         customKeyboard={this.state.customKeyboard}
         onKeyboardItemSelected={this.onKeyboardItemSelected}
         onKeyboardResigned={this.onKeyboardResigned}
-        resetKeyboardView={this.resetKeyboardView}
         setKeyboardAccessoryViewHeight={(height: number) => this.setState({ keyboardAccessoryViewHeight: height })}
         keyboardAccessoryViewHeight={this.state.keyboardAccessoryViewHeight}
         modeButtons={['Write Mode', 'Preview Mode']}
