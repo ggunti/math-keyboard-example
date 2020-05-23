@@ -51,7 +51,8 @@ class Comments extends Component<CommentsProps> {
             ref={this.props.setInputRef}
             placeholder='Message'
             underlineColorAndroid='transparent'
-            onBlur={this.props.onKeyboardResigned}
+            onBlur={Platform.OS === 'android' ? this.props.onKeyboardResigned : undefined}
+            showSoftInputOnFocus={this.props.customKeyboard.component ? false : true} // available only on android
             value={this.props.message}
             onChangeText={this.props.setMessage}
           />
