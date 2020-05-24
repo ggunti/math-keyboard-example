@@ -48,37 +48,18 @@ const MathKeyboard = React.memo((props: any) => {
       </TouchableOpacity>
     </View>
   ), [onButtonPress]);
-  const renderRow = useCallback(({ item: row, index: rowIndex }: { item: string[], index: number }) => {
-    return (
-      <View key={`__row${rowIndex}`} style={styles.row}>
-        {row.map((symbol, index) => renderButton(symbol, `__button${rowIndex}${index}`))}
-      </View>
-    )
-  }, [renderButton]);
-  const rows = useMemo(() => {
-    const { symbols } = props;
-    const rows: string[][] = [[]];
-    let i = 0;
-    let j = 0;
-    while (i < symbols.length) {
-      rows[j].push(symbols[i]);
-      if ((i + 1) % NR_SYMBOLS_PER_ROW === 0) {
-        rows.push([]);
-        j++;
-      }
-      i++;
-    }
-    return rows;
-  }, [props.symbols]);
+  const renderItem = useCallback(({ item: symbol, index }) => renderButton(symbol, `__button${index}`), [renderButton]);
+
   const keyExtractor = useCallback((item, index) => `row${index}`, []);
   return <FlatList
-    data={rows}
-    renderItem={renderRow}
+    data={props.symbols}
+    numColumns={NR_SYMBOLS_PER_ROW}
+    renderItem={renderItem}
     //contentContainerStyle={styles.keyboardContainer}
     keyboardShouldPersistTaps='always'
     keyExtractor={keyExtractor}
-    maxToRenderPerBatch={10}
-    initialNumToRender={20}
+    maxToRenderPerBatch={NR_SYMBOLS_PER_ROW}
+    initialNumToRender={NR_SYMBOLS_PER_ROW}
   />
 })
 
