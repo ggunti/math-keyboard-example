@@ -4,33 +4,21 @@ import {
   View,
   ScrollView,
   FlatList,
-  Text,
-  TouchableOpacity,
-  Platform,
   StyleSheet,
   PixelRatio,
+  NativeSyntheticEvent,
+  TextInputSelectionChangeEventData,
 } from 'react-native';
 import { ButtonGroup } from 'react-native-elements';
-// @ts-ignore
-import { KeyboardAccessoryView } from 'react-native-keyboard-input';
-// @ts-ignore
-import { AutoGrowingTextInput } from 'react-native-autogrow-textinput';
-import { MathWithText } from '../common';
+import { MathWithText, MathInput } from '../common';
 
 interface CommentsProps {
   message: string;
   setMessage: (message: string) => void;
+  onInputSelectionChange: (e: NativeSyntheticEvent<TextInputSelectionChangeEventData>) => void;
   comments: string[];
   onPressSend: () => void;
-  inputRef: any;
-  setInputRef: (ref: any) => void;
-  toolbarButtons: { text: string; testID: string; onPress: () => any }[];
-  isKeyboardShown: boolean;
-  customKeyboard: { component?: string; initialProps?: { title: string } };
   onKeyboardItemSelected: (keyboardId: string, params: object) => void;
-  onKeyboardResigned: () => void;
-  setKeyboardAccessoryViewHeight: (height: number) => void;
-  keyboardAccessoryViewHeight: number;
   modeButtons: string[];
   selectedModeIndex: number;
   updateSelectedModeIndex: (selectedModeIndex: number) => void;
@@ -39,45 +27,6 @@ interface CommentsProps {
 const TrackInteractive = true;
 
 class Comments extends Component<CommentsProps> {
-  keyboardAccessoryViewContent = () => {
-    return (
-      <View style={styles.keyboardContainer}>
-        <View style={{ borderTopWidth: StyleSheet.hairlineWidth, borderColor: '#bbb' }} />
-
-        <View style={styles.inputContainer}>
-          <AutoGrowingTextInput
-            maxHeight={200}
-            style={styles.textInput}
-            ref={this.props.setInputRef}
-            placeholder='Message'
-            underlineColorAndroid='transparent'
-            onBlur={Platform.OS === 'android' ? this.props.onKeyboardResigned : undefined}
-            showSoftInputOnFocus={this.props.customKeyboard.component ? false : true} // available only on android
-            value={this.props.message}
-            onChangeText={this.props.setMessage}
-          />
-          <TouchableOpacity style={styles.sendButton} onPress={this.props.onPressSend}>
-            <Text>Send</Text>
-          </TouchableOpacity>
-        </View>
-        {(this.props.isKeyboardShown || this.props.customKeyboard.component) && (
-          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} keyboardShouldPersistTaps='handled'>
-            {this.props.toolbarButtons.map((button, index) => (
-              <TouchableOpacity
-                onPress={button.onPress}
-                style={{ paddingHorizontal: 8, paddingBottom: 10 }}
-                key={index}
-                testID={button.testID}
-              >
-                <Text>{button.text}</Text>
-              </TouchableOpacity>
-            ))}
-          </ScrollView>
-        )}
-      </View>
-    );
-  };
-
   renderItem = ({ item }: { item: string }) => (
     <MathWithText
       mathWithText={item}
@@ -127,20 +76,15 @@ class Comments extends Component<CommentsProps> {
           />
           {this.renderPreviewMode()}
           {this.renderWriteMode()}
-          <KeyboardAccessoryView
-            renderContent={this.keyboardAccessoryViewContent}
-            onHeightChanged={Platform.OS === 'ios' ? this.props.setKeyboardAccessoryViewHeight : undefined}
-            trackInteractive={TrackInteractive}
-            kbInputRef={this.props.inputRef}
-            kbComponent={this.props.customKeyboard.component}
-            kbInitialProps={this.props.customKeyboard.initialProps}
-            onItemSelected={this.props.onKeyboardItemSelected}
-            onKeyboardResigned={this.props.onKeyboardResigned}
-            revealKeyboardInteractive
-            // requiresSameParentToManageScrollView
-            // addBottomView
-            // bottomViewColor='red'
-            // allowHitsOutsideBounds
+          <MathInput
+            value={this.props.message}
+            onChangeText={this.props.setMessage}
+            onKeyboardItemSelected={this.props.onKeyboardItemSelected}
+            onPressSend={this.props.onPressSend}
+            inputMaxHeight={200}
+            inputPlaceholder='Message'
+            onInputSelectionChange={this.props.onInputSelectionChange}
+            inputStyle={styles.textInput}
           />
         </View>
       </SafeAreaView>
@@ -162,27 +106,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
   },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-    paddingTop: 50,
-    paddingBottom: 50,
-  },
-  inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginBottom: 25,
-  },
-  keyboardContainer: {
-    ...Platform.select({
-      ios: {
-        flex: 1,
-        backgroundColor: COLOR,
-      },
-    }),
-  },
   textInput: {
     flex: 1,
     maxHeight: 200,
@@ -196,10 +119,5 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderWidth: 0.5 / PixelRatio.get(),
     borderRadius: 18,
-  },
-  sendButton: {
-    paddingRight: 15,
-    paddingLeft: 15,
-    alignSelf: 'center',
   },
 });
