@@ -24,11 +24,11 @@ interface MathInputProps {
   value: string;
   onChangeText: (text: string) => void;
   onKeyboardItemSelected: (keyboardId: string, params: object) => void;
-  onPressSend: () => void;
+  onPressSend?: () => void;
   inputMaxHeight: number;
   inputPlaceholder: string;
   onInputSelectionChange: (e: NativeSyntheticEvent<TextInputSelectionChangeEventData>) => void;
-  inputStyle: StyleProp<TextStyle>;
+  inputStyle?: StyleProp<TextStyle>;
 }
 
 interface MathInputState {
