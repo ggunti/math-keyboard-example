@@ -78,6 +78,7 @@ const MathKeyboard = React.memo((props: any) => {
     keyboardShouldPersistTaps='always'
     keyExtractor={keyExtractor}
     maxToRenderPerBatch={10}
+    initialNumToRender={20}
   />
 })
 
