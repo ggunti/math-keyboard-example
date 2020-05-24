@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useMemo, useCallback } from 'react';
 import { View, Text, StyleSheet, ViewStyle, TextStyle } from 'react-native';
 import MathView from 'react-native-math-view';
 
@@ -12,33 +12,37 @@ interface MathWithTextProps {
   };
 }
 
-class MathWithText extends Component<MathWithTextProps> {
-  static defaultProps = {
-    config: {
-      ex: 8,
-      inline: true,
-    },
-  };
+const MathWithText = React.memo((props: any) => {
+  const renderer = useCallback((str: string, index: number) => {
+    if (index % 2 === 0) {
+      return (
+        <Text key={index} style={[styles.text, props.textStyle]}>
+          {str}
+        </Text>
+      );
+    } else {
+      return <MathView key={str} config={props.config} resizeMode='contain' math={str} />;
+    }
+  }, [props.config, props.textStyle]);
+  const tree = useMemo(() => {
+    const res = props.mathWithText.split(/\$\$/g);
+    return res.map(renderer);
+  }, [props.mathWithText]);
 
-  render() {
-    const res = this.props.mathWithText.split(/\$\$/g);
-    return (
-      <View style={[styles.mathBox, this.props.mathBoxStyle]}>
-        {res.map((str, index) => {
-          if (index % 2 === 0) {
-            return (
-              <Text key={index} style={[styles.text, this.props.textStyle]}>
-                {str}
-              </Text>
-            );
-          } else {
-            return <MathView key={index} config={this.props.config} resizeMode='contain' math={str} />;
-          }
-        })}
-      </View>
-    );
-  }
-}
+  return (
+    <View style={[styles.mathBox, props.mathBoxStyle]}>
+      {tree}
+    </View>
+  );
+
+});
+
+MathWithText.defaultProps = {
+  config: {
+    ex: 8,
+    inline: true,
+  },
+};
 
 export { MathWithText };
 
