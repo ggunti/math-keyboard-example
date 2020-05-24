@@ -945,5 +945,5 @@ MathjaxFactory().preload([
   ...lowercase,
   ...uppercase,
   ...basicNaryOperators,
-  ///...commonMath
+  ...commonMath.slice(0, 20)
 ]);
