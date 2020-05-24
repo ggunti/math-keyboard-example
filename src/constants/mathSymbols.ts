@@ -1,3 +1,6 @@
+import MathView, { MathjaxFactory } from 'react-native-math-view';
+
+
 export const basicMath = [
   '\\pm',
   '\\infty',
@@ -936,3 +939,11 @@ export const commonMath = [
   '\\left(\\begin{matrix}{1}&\\cdots&{2}\\\\\\vdots&\\ddots&\\vdots\\\\{3}&\\cdots&{4}\\\\\\end{matrix}\\right)',
   '\\left[\\begin{matrix}{1}&\\cdots&{2}\\\\\\vdots&\\ddots&\\vdots\\\\{3}&\\cdots&{4}\\\\\\end{matrix}\\right]',
 ];
+
+MathjaxFactory().preload([
+  ...basicMath,
+  ...lowercase,
+  ...uppercase,
+  ...basicNaryOperators,
+  ...commonMath.slice(0, 20)
+]);

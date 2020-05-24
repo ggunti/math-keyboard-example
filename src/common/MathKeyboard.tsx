@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { View, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
+import React, { Component, useCallback, useMemo } from 'react';
+import { View, TouchableOpacity, ScrollView, StyleSheet, FlatList } from 'react-native';
 // @ts-ignore
 import { KeyboardRegistry } from 'react-native-keyboard-input';
 import { MathWithText } from './MathWithText';
@@ -33,14 +33,13 @@ const NR_SYMBOLS_PER_ROW = 5;
 // console.ignoredYellowBox = ['Warning: Each', 'Warning: Failed'];
 // console.disableYellowBox = true;
 
-class MathKeyboard extends Component<MathKeyboardProps> {
-  onButtonPress = (symbol: string) => {
-    KeyboardRegistry.onItemSelected(this.props.keyboardId, { symbol });
-  };
-
-  renderButton = (symbol: string, key: string) => (
+const MathKeyboard = React.memo((props: any) => {
+  const onButtonPress = useCallback((symbol: string) => {
+    KeyboardRegistry.onItemSelected(props.keyboardId, { symbol });
+  }, [props.keyboardId]);
+  const renderButton = useCallback((symbol: string, key: string) => (
     <View key={key} style={styles.button}>
-      <TouchableOpacity onPress={() => this.onButtonPress(symbol)}>
+      <TouchableOpacity onPress={() => onButtonPress(symbol)}>
         <MathWithText
           config={{ ex: 8, inline: false }}
           mathWithText={'$$' + symbol + '$$'}
@@ -48,34 +47,21 @@ class MathKeyboard extends Component<MathKeyboardProps> {
         />
       </TouchableOpacity>
     </View>
-  );
+  ), [onButtonPress]);
+  const renderItem = useCallback(({ item: symbol, index }) => renderButton(symbol, `__button${index}`), [renderButton]);
 
-  renderRow = (row: string[], rowIndex: number) => (
-    <View key={rowIndex} style={styles.row}>
-      {row.map((symbol, index) => this.renderButton(symbol, `${rowIndex}${index}`))}
-    </View>
-  );
-
-  render() {
-    const { symbols } = this.props;
-    const rows: string[][] = [[]];
-    let i = 0;
-    let j = 0;
-    while (i < symbols.length) {
-      rows[j].push(symbols[i]);
-      if ((i + 1) % NR_SYMBOLS_PER_ROW === 0) {
-        rows.push([]);
-        j++;
-      }
-      i++;
-    }
-    return (
-      <ScrollView contentContainerStyle={styles.keyboardContainer} keyboardShouldPersistTaps='always'>
-        {rows.map((row, rowIndex) => this.renderRow(row, rowIndex))}
-      </ScrollView>
-    );
-  }
-}
+  const keyExtractor = useCallback((item, index) => `row${index}`, []);
+  return <FlatList
+    data={props.symbols}
+    numColumns={NR_SYMBOLS_PER_ROW}
+    renderItem={renderItem}
+    //contentContainerStyle={styles.keyboardContainer}
+    keyboardShouldPersistTaps='always'
+    keyExtractor={keyExtractor}
+    maxToRenderPerBatch={NR_SYMBOLS_PER_ROW}
+    initialNumToRender={NR_SYMBOLS_PER_ROW}
+  />
+})
 
 const styles = StyleSheet.create({
   keyboardContainer: {
