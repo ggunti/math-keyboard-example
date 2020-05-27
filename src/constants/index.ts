@@ -1,4 +1,4 @@
-export const KEYBOARDS = {
+export const KEYBOARD_VIEWS = {
   BASIC: 'BasicMathKeyboard',
   LOWERCASE: 'LowercaseKeyboard',
   UPPERCASE: 'UppercaseKeyboard',
