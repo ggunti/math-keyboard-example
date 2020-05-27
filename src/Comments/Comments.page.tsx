@@ -168,8 +168,13 @@ class CommentsPage extends Component<{}, CommentsPageState> {
     const { start, end } = this.state.inputSelection;
     // @ts-ignore
     const { symbol }: { symbol: string } = params;
-    const newMessage = message.slice(0, start) + '$$' + symbol + '$$' + message.slice(end);
-    this.setState({ message: newMessage });
+    const leftMsgSlice = message.slice(0, start);
+    const rightMsgSlice = message.slice(end);
+    let newSymbol = symbol;
+    if ((leftMsgSlice.match(/\$\$/g) || []).length % 2 === 0) {
+      newSymbol = '$$' + symbol + '$$';
+    }
+    this.setState({ message: leftMsgSlice + newSymbol + rightMsgSlice });
   };
 
   onInputSelectionChange = (e: NativeSyntheticEvent<TextInputSelectionChangeEventData>) => {
