@@ -16,13 +16,21 @@ const MathWithText = React.memo((props: MathWithTextProps) => {
   const renderer = useCallback(
     (str: string, index: number) => {
       if (index % 2 === 0) {
-        return (
-          <Text key={index} style={[styles.text, props.textStyle]}>
-            {str}
-          </Text>
+        const rows = str.split(/(\n)/);
+        if (rows.length > 1 && rows[rows.length - 1] === '') {
+          rows.pop();
+        }
+        return rows.map((val: string, i: number) =>
+          val === '\n' ? ( // insert new line
+            <View key={`${index}${i}`} style={{ width: '100%' }} />
+          ) : (
+            <Text key={`${index}${i}`} style={[styles.text, props.textStyle]}>
+              {val}
+            </Text>
+          ),
         );
       } else {
-        return <MathView key={str} config={props.config} resizeMode='contain' math={str} />;
+        return <MathView key={index} config={props.config} resizeMode='contain' math={str} />;
       }
     },
     [props.config, props.textStyle],
