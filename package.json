@@ -12,7 +12,6 @@
   "dependencies": {
     "react": "16.11.0",
     "react-native": "0.62.2",
-    "react-native-autogrow-textinput": "^5.4.0",
     "react-native-elements": "^2.0.0",
     "react-native-keyboard-input": "^6.0.0",
     "react-native-math-view": "^3.4.8",

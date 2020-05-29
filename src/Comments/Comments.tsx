@@ -95,7 +95,6 @@ class Comments extends Component<CommentsProps> {
               onInputSelectionChange={this.props.onInputSelectionChange}
               value={this.props.message}
               onChangeText={this.props.setMessage}
-              maxHeight={200}
               inputStyle={styles.textInput}
               setInputRef={this.props.setInputRef}
               placeholder='Message'

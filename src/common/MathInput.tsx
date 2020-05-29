@@ -1,7 +1,12 @@
 import React from 'react';
-import { Platform, StyleProp, TextStyle, NativeSyntheticEvent, TextInputSelectionChangeEventData } from 'react-native';
-// @ts-ignore
-import { AutoGrowingTextInput } from 'react-native-autogrow-textinput';
+import {
+  TextInput,
+  Platform,
+  StyleProp,
+  TextStyle,
+  NativeSyntheticEvent,
+  TextInputSelectionChangeEventData,
+} from 'react-native';
 
 interface MathInputProps {
   customKeyboard: {
@@ -12,7 +17,6 @@ interface MathInputProps {
   onInputSelectionChange: (e: NativeSyntheticEvent<TextInputSelectionChangeEventData>) => void;
   value: string;
   onChangeText: (text: string) => void;
-  maxHeight: number;
   inputStyle?: StyleProp<TextStyle>;
   setInputRef: (ref: any) => void;
   placeholder?: string;
@@ -20,14 +24,14 @@ interface MathInputProps {
 }
 
 const MathInput: React.FC<MathInputProps> = props => (
-  <AutoGrowingTextInput
-    maxHeight={props.maxHeight}
+  <TextInput
     style={props.inputStyle}
     ref={props.setInputRef}
     placeholder={props.placeholder}
     underlineColorAndroid={props.underlineColorAndroid}
     multiline={true}
     onBlur={Platform.OS === 'android' ? props.onKeyboardResigned : undefined}
+    // @ts-ignore
     showSoftInputOnFocus={props.customKeyboard.component ? false : true} // available only on android
     onSelectionChange={props.onInputSelectionChange}
     value={props.value}

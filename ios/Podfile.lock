@@ -293,8 +293,6 @@ PODS:
     - React-cxxreact (= 0.62.2)
     - React-jsi (= 0.62.2)
     - ReactCommon/callinvoker (= 0.62.2)
-  - ReactNativeAutogrowTextinput (5.4.0):
-    - React
   - ReactNativeKeyboardInput (6.0.0):
     - React
   - ReactNativeKeyboardTrackingView (5.7.0):
@@ -356,7 +354,6 @@ DEPENDENCIES:
   - React-RCTVibration (from `../node_modules/react-native/Libraries/Vibration`)
   - ReactCommon/callinvoker (from `../node_modules/react-native/ReactCommon`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
-  - ReactNativeAutogrowTextinput (from `../node_modules/react-native-autogrow-textinput`)
   - ReactNativeKeyboardInput (from `../node_modules/react-native-keyboard-input`)
   - ReactNativeKeyboardTrackingView (from `../node_modules/react-native-keyboard-tracking-view`)
   - RNMathView (from `../node_modules/react-native-math-view/ios`)
@@ -429,8 +426,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/Libraries/Vibration"
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
-  ReactNativeAutogrowTextinput:
-    :path: "../node_modules/react-native-autogrow-textinput"
   ReactNativeKeyboardInput:
     :path: "../node_modules/react-native-keyboard-input"
   ReactNativeKeyboardTrackingView:
@@ -481,7 +476,6 @@ SPEC CHECKSUMS:
   React-RCTText: fae545b10cfdb3d247c36c56f61a94cfd6dba41d
   React-RCTVibration: 4356114dbcba4ce66991096e51a66e61eda51256
   ReactCommon: ed4e11d27609d571e7eee8b65548efc191116eb3
-  ReactNativeAutogrowTextinput: 67ccba730d624ed6b12aa04a0d423db286320b73
   ReactNativeKeyboardInput: 57a373d7d2289eff79ce6ce02b29ac02c4d76a8f
   ReactNativeKeyboardTrackingView: 02137fac3b2ebd330d74fa54ead48b14750a2306
   RNMathView: 4c8a3c081fa671ab3136c51fa0bdca7ffb708bd5
