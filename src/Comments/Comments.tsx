@@ -90,6 +90,7 @@ class Comments extends Component<CommentsProps> {
           {this.renderWriteMode()}
           <View style={styles.inputContainer}>
             <MathInput
+              maxHeight={120}
               customKeyboard={this.props.customKeyboard}
               onKeyboardResigned={this.props.onKeyboardResigned}
               onInputSelectionChange={this.props.onInputSelectionChange}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import {
   TextInput,
   Platform,
@@ -6,9 +6,11 @@ import {
   TextStyle,
   NativeSyntheticEvent,
   TextInputSelectionChangeEventData,
+  TextInputContentSizeChangeEventData,
 } from 'react-native';
 
 interface MathInputProps {
+  maxHeight?: number;
   customKeyboard: {
     component?: string;
     initialProps?: {};
@@ -23,24 +25,47 @@ interface MathInputProps {
   underlineColorAndroid?: string;
 }
 
-const MathInput: React.FC<MathInputProps> = props => (
-  <TextInput
-    style={props.inputStyle}
-    ref={props.setInputRef}
-    placeholder={props.placeholder}
-    underlineColorAndroid={props.underlineColorAndroid}
-    multiline={true}
-    onBlur={Platform.OS === 'android' ? props.onKeyboardResigned : undefined}
-    // @ts-ignore
-    showSoftInputOnFocus={props.customKeyboard.component ? false : true} // available only on android
-    onSelectionChange={props.onInputSelectionChange}
-    value={props.value}
-    onChangeText={props.onChangeText}
-  />
-);
+interface MathInputState {
+  height: number | undefined;
+}
 
-MathInput.defaultProps = {
-  underlineColorAndroid: 'transparent',
-};
+class MathInput extends Component<MathInputProps, MathInputState> {
+  state = {
+    height: undefined,
+  };
+
+  static defaultProps = {
+    underlineColorAndroid: 'transparent',
+  };
+
+  onContentSizeChange = (e: NativeSyntheticEvent<TextInputContentSizeChangeEventData>) => {
+    const { maxHeight } = this.props;
+    const { height } = e.nativeEvent.contentSize;
+    if (maxHeight && maxHeight >= height) {
+      this.setState({ height });
+    }
+  };
+
+  render() {
+    const { height } = this.state;
+    const heightStyle = this.props.maxHeight ? { height } : {};
+    return (
+      <TextInput
+        style={[this.props.inputStyle, heightStyle]}
+        ref={this.props.setInputRef}
+        placeholder={this.props.placeholder}
+        underlineColorAndroid={this.props.underlineColorAndroid}
+        multiline={true}
+        onBlur={Platform.OS === 'android' ? this.props.onKeyboardResigned : undefined}
+        // @ts-ignore
+        showSoftInputOnFocus={this.props.customKeyboard.component ? false : true} // available only on android
+        onSelectionChange={this.props.onInputSelectionChange}
+        value={this.props.value}
+        onChangeText={this.props.onChangeText}
+        onContentSizeChange={this.onContentSizeChange}
+      />
+    );
+  }
+}
 
 export { MathInput };
