@@ -64,9 +64,8 @@ const MathView = React.memo((props: MathViewProps) => {
       renderItem={renderItem}
       keyboardShouldPersistTaps='always'
       keyExtractor={keyExtractor}
-      onEndReachedThreshold={0.5}
-      // maxToRenderPerBatch={NR_SYMBOLS_PER_ROW}
-      // initialNumToRender={NR_SYMBOLS_PER_ROW}
+      maxToRenderPerBatch={NR_SYMBOLS_PER_ROW}
+      initialNumToRender={NR_SYMBOLS_PER_ROW}
     />
   );
 });
