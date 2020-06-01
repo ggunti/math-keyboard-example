@@ -41,8 +41,8 @@ class MathInput extends Component<MathInputProps, MathInputState> {
   onContentSizeChange = (e: NativeSyntheticEvent<TextInputContentSizeChangeEventData>) => {
     const { maxHeight } = this.props;
     const { height } = e.nativeEvent.contentSize;
-    if (maxHeight && maxHeight >= height) {
-      this.setState({ height });
+    if (maxHeight) {
+      this.setState({ height: Math.min(height, maxHeight) });
     }
   };
 

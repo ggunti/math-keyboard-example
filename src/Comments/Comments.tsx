@@ -130,7 +130,6 @@ const styles = StyleSheet.create({
     backgroundColor: COLOR,
   },
   previewContainer: {
-    flex: 1,
     alignItems: 'center',
   },
   inputContainer: {
@@ -148,7 +147,6 @@ const styles = StyleSheet.create({
   },
   textInput: {
     flex: 1,
-    maxHeight: 200,
     marginLeft: 10,
     marginTop: 10,
     marginBottom: 10,
