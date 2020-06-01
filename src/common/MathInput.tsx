@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 
 interface MathInputProps {
-  maxHeight?: number;
+  maxHeight: number;
   customKeyboard: {
     component?: string;
     initialProps?: {};
@@ -41,17 +41,14 @@ class MathInput extends Component<MathInputProps, MathInputState> {
   onContentSizeChange = (e: NativeSyntheticEvent<TextInputContentSizeChangeEventData>) => {
     const { maxHeight } = this.props;
     const { height } = e.nativeEvent.contentSize;
-    if (maxHeight) {
-      this.setState({ height: Math.min(height, maxHeight) });
-    }
+    this.setState({ height: Math.min(height, maxHeight) });
   };
 
   render() {
     const { height } = this.state;
-    const heightStyle = this.props.maxHeight ? { height } : {};
     return (
       <TextInput
-        style={[this.props.inputStyle, heightStyle]}
+        style={[this.props.inputStyle, { height }]}
         ref={this.props.setInputRef}
         placeholder={this.props.placeholder}
         underlineColorAndroid={this.props.underlineColorAndroid}
