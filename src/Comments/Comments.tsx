@@ -63,7 +63,6 @@ class Comments extends Component<CommentsProps> {
   renderPreviewMode = () => (
     <ScrollView
       contentContainerStyle={styles.previewContainer}
-      style={{ display: this.props.selectedModeIndex === 1 ? 'flex' : 'none' }}
       keyboardDismissMode={TrackInteractive ? 'interactive' : 'none'}
       showsVerticalScrollIndicator={false}
     >
@@ -86,7 +85,7 @@ class Comments extends Component<CommentsProps> {
             buttons={this.props.modeButtons}
             containerStyle={{ marginBottom: 15 }}
           />
-          {this.renderPreviewMode()}
+          {this.props.selectedModeIndex === 1 && this.renderPreviewMode()}
           {this.renderWriteMode()}
           <View style={styles.inputContainer}>
             <MathInput
