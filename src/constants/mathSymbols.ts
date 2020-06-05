@@ -678,7 +678,6 @@ export const commonMath = [
   '\\frac{x}{y}',
   // '\\sfrac{x}{y}',
   // '\\sfrac{x}{y}',
-  '\\frac{x}{y}',
   '\\frac{dy}{dx}',
   '\\frac{\\Delta y}{\\Delta x}',
   '\\frac{\\partial y}{\\partial x}',
